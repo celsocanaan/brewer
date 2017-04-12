@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="'layout/LayoutPadrao'">
+
+<!-- Deixar o head para esta versao do thymeleaf, pois é bug -->
+<head></head>
+
+<body>
+   <!-- Sessão onde se coloca o conteúdo.  -->
+   <section layout:fragment="conteudo">
+
+      <div class="page-header">
+         <div class="container-fluid">
+            <h1>Cadastro de Cidade</h1>
+         </div>
+      </div>
+
+      <div class="container-fluid">
+         <!-- 
+                    <div class="alert  alert-danger  alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <i class="fa  fa-exclamation-circle"></i> Já existe uma Cidade com o nome informado.
+                    </div>
+         -->
+         <form method="POST" th:object="${Cidade}" class="form-vertical  js-form-loading">
+
+            <div class="row">
+               <!-- cada linha tem 12 colunas  -->
+               <div class="col-sm-7 form-group">
+                  <label for="cidadeNome">Nome</label>
+                  <input id="cidadeNome" type="text" class="form-control" />
+               </div>
+               
+               <div class="col-sm-2  form-group">
+                  <label for="uf">Estado</label>
+                  <div class="bw-field-action">
+                     <select id="uf" class="form-control">
+                        <option value="">Selecione</option>
+                        <option value="1">Minas Gerais</option>
+                        <option value="2">Rio de Janeiro</option>
+                     </select>
+
+                     <div class="bw-field-action__icon">
+                        <a href="#">
+                           <a href="#" data-toggle="modal" data-target="#modalCadaRapUF">
+                              <i class="glyphicon  glyphicon-plus-sign  situr-campo-glyphicon-large"></i>
+                           </a>
+
+                        </a>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="col-sm-2  form-group">
+                  <label for="pais">Estado</label>
+                  <div class="bw-field-action">
+                     <select id="pais" class="form-control">
+                        <option value="">Selecione</option>
+                        <option value="1">Brasil</option>
+                        <option value="2">Uruguai</option>
+                     </select>
+
+                     <div class="bw-field-action__icon">
+                        <a href="#">
+                           <a href="#" data-toggle="modal" data-target="#modalCadaRapPais">
+                              <i class="glyphicon  glyphicon-plus-sign  situr-campo-glyphicon-large"></i>
+                           </a>
+
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="form-group">
+               <button class="btn  btn-primary" type="submit">Salvar</button>
+            </div>
+
+         </form>
+      </div>
+      
+      <!-- Inclui a chamada da janela modal para cadastro rápido --> 
+      <div th:replace="cidade/CadaRapPais :: modal"></div>
+      <div th:replace="cidade/CadaRapUF :: modal"></div>
+      
+      
+   </section>
+</body>
+</html>

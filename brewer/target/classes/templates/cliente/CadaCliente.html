@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:data="http://www.thymeleaf.org/extras/data"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorator="'layout/LayoutPadrao'">
+
+<!-- Deixar o head para esta versao do thymeleaf, pois é bug -->
+<head></head>
+
+<body>
+
+   <!-- Sessão onde se coloca o conteúdo.  -->
+   <section layout:fragment="conteudo">
+
+      <div class="page-header">
+         <div class="container-fluid">
+            <h1>Cadastro de Cliente</h1>
+         </div>
+      </div>
+
+      <div class="container-fluid">
+      
+         <th:block th:include="fragments/MensagemSucesso"></th:block>
+
+         <form method="POST" th:object="${cliente}" class="form-vertical  js-form-loading">
+         
+            <th:block th:include="fragments/MensagemErroValidacao"></th:block>
+         
+            <ul class="nav nav-pills">
+               <li class="active">
+                  <a href="#geral" data-toggle="pill">Geral</a>
+               </li>
+               <li>
+                  <a href="#fisica" data-toggle="pill">Física</a>
+               </li>
+               <li>
+                  <a href="#juridica" data-toggle="pill">Jurídica</a>
+               </li>
+            </ul>
+
+            <div class="tab-content">
+               <!-- Tab Geral -->
+               <div class="tab-pane fade in active" id="geral">
+                  <div class="row">
+                     <!-- cada linha tem 12 colunas por padrão -->
+
+                     <div class="col-sm-4 form-group" th:classappend="${#fields.hasErrors('nome')} ? has-error">
+                        <label for="nome" class="control-label">Nome</label>
+                        <input id="nome" type="text" class="form-control" th:field="*{nome}" />
+                     </div>
+
+                     <div class="col-sm-2 form-group">
+                        <label for="titulo">Título</label>
+                        <input id="titulo" type="text" class="form-control" th:field="*{titulo}" />
+                     </div>
+
+                     <div class="col-sm-2 form-group">
+                        <label for="tipoCliente">Tipo</label>
+                        <div class="brewer-campo-acao">
+                           <select id="tipoCliente" class="form-control" th:field="*{tipo}">
+                              <option value="">Selecione</option>
+                              <option th:each="tipoCliente : ${tiposCliente}" th:value="${tipoCliente}"
+                                 th:text="${tipoCliente.descricao}">Física</option>
+                           </select>
+
+                           <div class="brewer-campo-acao__icon">
+                              <a href="#">
+                                 <a href="#" data-toggle="modal" data-target="#modalCadaRapTipoCliente">
+                                    <i class="glyphicon  glyphicon-plus-sign  brewer-campo-glyphicon-large"></i>
+                                 </a>
+
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-sm-3 form-group">
+                        <label for="apelido">Apelido</label>
+                        <input id="apelido" type="text" class="form-control" th:field="*{apelido}" />
+                     </div>
+
+                  </div>
+
+                  <!-- Linha logradouro -->
+                  <div class="row">
+                     <div class="col-sm-2  form-group">
+                        <label for="endTipoLogradouro">Tipo Logradouro</label>
+                        <div class="brewer-campo-acao">
+                           <select id="endTipoLogradouro" class="form-control" th:field="*{endTipoLogradouro}">
+                              <option value="">Selecione</option>
+                              <option th:each="endTipoLogradouro : ${tipoLogradouros}" th:value="${endTipoLogradouro.id}" th:text="${endTipoLogradouro.nome}">Pale lager</option>
+                           </select>
+
+                           <div class="brewer-campo-acao__icon">
+                              <a href="#">
+                                 <a href="#" data-toggle="modal" data-target="#modalCadaRapTipoLogradouro">
+                                    <i class="glyphicon  glyphicon-plus-sign  brewer-campo-glyphicon-large"></i>
+                                 </a>
+
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-sm-4 form-group">
+                        <label for="endLogradouro">Logradouro</label>
+                        <input id="endLogradouro" type="text" class="form-control" th:field="*{endLogradouro}" />
+                     </div>
+
+                     <div class="col-sm-2 form-group">
+                        <label for="endNumero">Número</label>
+                        <input id="endNumero" type="text" class="form-control js-inteiro" th:field="*{endNumero}" />
+                     </div>
+
+                     <div class="col-sm-2 form-group">
+                        <label for="endComplemento">Complemento</label>
+                        <input id="endComplemento" type="text" class="form-control" th:field="*{endComplemento}" />
+                     </div>
+
+                     <div class="col-sm-2 form-group">
+                        <label for="endCep">Cep</label>
+                        <input id="endCep" type="text" class="form-control js-inteiro" th:field="*{endCep}" />
+                     </div>
+                  </div>
+
+                  <!-- Linha Cidade -->
+                  <div class="row">
+                     <div class="col-sm-2  form-group">
+                        <label for="estado">Estado</label>
+                        <select id="estado" class="form-control">
+                           <option value="">Selecione</option>
+                           <option th:each="estado : ${estados}" th:value="${estado.id}" th:text="${estado.nome}">Minas Gerais</option>
+                        </select>
+                     </div>
+                     
+                     <div class="col-sm-4  form-group">
+                        <label for="cidade">Cidade</label>
+                        <div class="brewer-campo-acao">
+                           <select id="cidade" class="form-control" data:url="@{/cidades}">
+                           </select>
+                           
+                           <div class="brewer-campo-acao__icon js-img-loading" style="dysplay: none">
+                              <img th:src="@{/images/mini-loading.gif}"/>
+                           </div>
+                        </div>
+                     </div>
+                     
+<!-- 
+
+                     <div class="col-sm-2  form-group">
+                        <label for="endPais">País</label>
+                        <div class="brewer-campo-acao">
+                           <select id="endPais" class="form-control">
+                              <option value="">Selecione</option>
+                              <option value="1">Brasil</option>
+                              <option value="2">Uruguai</option>
+                           </select>
+
+                           <div class="brewer-campo-acao__icon">
+                              <a href="#">
+                                 <a href="#" data-toggle="modal" data-target="#modalCadaRapPais">
+                                    <i class="glyphicon  glyphicon-plus-sign  brewer-campo-glyphicon-large"></i>
+                                 </a>
+
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+-->
+                                      
+                  </div>
+
+
+               </div>
+               <!-- Fim Tab Geral -->
+
+               <!-- Tab Pessoa Física -->
+               <div class="tab-pane fade" id="fisica">
+                  <h1>Pessoa Física</h1>
+
+               </div>
+               <!-- Fim Tab Pessoa Física -->
+
+
+               <!-- Tab Pessoa Jurídica -->
+               <div class="tab-pane fade" id="juridica">
+                  <h1>Pessoa Jurídica</h1>
+
+               </div>
+               <!-- Fim Tab Pessoa Jurídica -->
+            </div>
+            <!-- Fim Tabs -->
+
+            <div class="form-group">
+               <button class="btn  btn-primary" type="submit">Salvar</button>
+            </div>
+         </form>
+      </div>
+
+      <!-- Inclui a chamada da janela modal para cadastro rápido -->
+      <div th:replace="tipocliente/CadaRapTipoCliente :: modal"></div>
+      <div th:replace="cidade/CadaRapTipoLogradouro :: modal"></div>
+      <div th:replace="cidade/CadaRapEstado :: modal"></div>
+   </section>
+
+<th:block layout:fragment="javascript-extra">
+    <script th:src="@{/javascripts/cliente.comboEstadoCidade.js}"></script>
+</th:block>
+
+</body>
+</html>
