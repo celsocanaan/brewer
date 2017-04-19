@@ -36,17 +36,6 @@ Contém os dados de Cidade. Um municipio é uma cidade, mas uma cidade nem sempr
 
 ALTER TABLE Estado ADD INDEX fk_estado_pais (id_pais), ADD CONSTRAINT fk_estado_pais FOREIGN KEY (id_pais) REFERENCES Pais (id);
 ALTER TABLE Cidade ADD INDEX fk_cidade_estado (id_estado), ADD CONSTRAINT fk_cidade_estado FOREIGN KEY (id_estado) REFERENCES Estado (id);
-
-CREATE TABLE PartidoPolitico (
-  id   int(11) NOT NULL AUTO_INCREMENT, 
-  nome char(50), 
-  PRIMARY KEY (id));
-  
-CREATE TABLE LogradouroTipo (
-  id   int(11) NOT NULL AUTO_INCREMENT, 
-  nome char(50) NOT NULL, 
-  PRIMARY KEY (id), 
-  INDEX (nome));
   
 CREATE TABLE Cliente (
   id                    int(15) NOT NULL AUTO_INCREMENT, 
@@ -91,7 +80,6 @@ M - Masculino',
 ALTER TABLE Cliente ADD INDEX fk_logradouro_tipo (end_tipo_logradouro), ADD CONSTRAINT fk_logradouro_tipo FOREIGN KEY (end_tipo_logradouro) REFERENCES TipoLogradouro (id);
 ALTER TABLE Cliente ADD INDEX fk_end_cidade (end_cidade), ADD CONSTRAINT fk_end_cidade FOREIGN KEY (end_cidade) REFERENCES Cidade (id);
 ALTER TABLE Cliente ADD INDEX fk_nasc_cidade (nasc_cidade), ADD CONSTRAINT fk_nasc_cidade FOREIGN KEY (nasc_cidade) REFERENCES Cidade (id) ON UPDATE No action ON DELETE No action;
-ALTER TABLE Cliente ADD INDEX fk_partido_politico (partido_politico), ADD CONSTRAINT fk_partido_politico FOREIGN KEY (partido_politico) REFERENCES PartidoPolitico (id);
 
 /* Carga de dados ************************/
 insert into TipoLogradouro (id, nome) values (0, 'Alameda');
